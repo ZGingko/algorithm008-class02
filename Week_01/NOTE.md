@@ -26,10 +26,76 @@
    3. 插入、删除元素时间复杂度：O(1)
    4. Stack & Queue 均不支持随机访问，查找元素的时间复杂度均为：O(n)
    5. **如果一件事具有最近相关性，则可以考虑用Stack解决**
+   ```python
+   # 栈的实现
+   class Stack(object):
+      def __init__(self):
+         self.__list = []
+
+      def push(self, item):
+      """添加元素到栈顶"""
+         self.__list.append(item)
+
+      def pop(self):
+         return self.__list.pop()
+
+      def peek(self):
+         if self.__list:
+            return self.__list[-1]
+         else:
+            return None
+
+      def is_empty(self):
+         return self.__list == []
+
+      def size(self):
+         return len(self.__list)
+
+   # 队列的实现
+   class Queue(object):
+      def __init__(self):
+         self.__list = []
+
+      def enqueue(self, item):
+         self.__list.append(item)
+
+      def dequeue(self):
+         return self.__list.pop(0)
+
+      def is_empty(self):
+         return self.__list == []
+
+      def size(self):
+         return len(self.__list)
+   ```
 2. Deque（Double End-Queue） 双端队列：
    1. 栈与队列的结合体，首尾均可进行添加与删除
    2. 插入与删除时间复杂度：O(1)
    3. 查询时间复杂度：O(n)
+   ```python
+   # 双端队列的实现
+   class Deque(object):
+      def __init__(self):
+         self.__list = []
+
+      def add_front(self, item):
+         self.__list.insert(0, item)
+
+      def add_rear(self, item):
+         return self.__list.append(item)
+
+      def pop_front(self):
+         return self.__list.pop(0)
+
+      def pop_rear(self):
+         return self.__list.pop()
+
+      def is_empty(self):
+         return self.__list == []
+
+      def size(self):
+         return len(self.__list)
+   ```
 3. Priority Queue 优先队列：
    1. 插入操作：O(1)
    2. 取出操作：O(logN)-按照元素的优先级取出
