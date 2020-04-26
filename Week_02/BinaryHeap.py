@@ -36,8 +36,9 @@ class BinaryHeap:
         if self.isEmpty():
             raise Exception("the heap is empty!")
         maxElement = self.heap[index]
-        self.heap[index] = self.heap.pop()
+        self.heap[index] = self.heap[-1]
         self.__heapifyDown(index)
+        self.heap.pop()
         return maxElement
 
 
@@ -49,6 +50,9 @@ class BinaryHeap:
         self.heap[i] = insertValue
 
     def __heapifyDown(self,i):
+        """
+        Maintains the heap property while deleting an element
+        """
         child = 0
         temp = self.heap[i]
         while self.__kthChild(i,1)<len(self.heap):
@@ -87,6 +91,7 @@ if __name__ == "__main__":
     maxHeap.insert(7)
     maxHeap.insert(5)
     maxHeap.insert(3)
+    maxHeap.insert(11)
     maxHeap.printHeap()
     maxHeap.delete(5)
     maxHeap.printHeap()
