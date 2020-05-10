@@ -47,8 +47,9 @@ class Solution(object):
             return []
         result = []
         result.append(root.val)
-        for node in root.children: # 2020-04-22 晚加，前一晚还没问题？
-            result += self.preorder2(node)
+        if root.children: # 2020-04-22 晚加，前一晚还没问题？
+            for node in root.children: 
+                result += self.preorder2(node)
         return result
 
     def postorder(self, root: Node):
@@ -95,7 +96,7 @@ class Solution(object):
 
 
     def levelOrder1(self, root:Node):
-        """N叉树的层序遍历"""
+        """N叉树的层序遍历,BFS"""
         if not root:
             return []
         result = []
@@ -118,6 +119,8 @@ class Solution(object):
             return []
         result = []
         queue = collections.deque([root])
+        # queue.append(root)
+        # visited = set(root)
         while queue:
             level = []
             for _ in range(len(queue)):
@@ -128,6 +131,39 @@ class Solution(object):
             result.append(level)
         return result
 
+    def levelOrderBinaryTree(self, root: BinaryTreeNode):
+        """二叉树的层序遍历"""
+        import collections
+        if root is None:
+            return []
+        result = []
+        queue = collections.deque([root])
+        while queue:
+            current_level = []
+            for _ in range(len(queue)):
+                node = queue.popleft()
+                current_level.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            result.append(current_level)
+        return result
+
+    def levelOrderBinaryTree2(self, root: BinaryTreeNode):
+        """二叉树的层序遍历"""
+        if not root:return [] 
+        self.result = []
+        self._dfs(root,0)
+        return self.result
+
+    def _dfs(self,node,level):
+        if not node :return
+        if len(self.result) < level + 1:
+            self.result.append([])
+        self.result[level].append(node.val)
+        self._dfs(node.left,level+1)
+        self._dfs(node.right,level+1)
     
     def preorderBinaryTree(self, root: BinaryTreeNode):
         """
@@ -236,6 +272,73 @@ class Solution(object):
                     stack.append((node.right, False))
                     stack.append((node.left, False))
         return result
+
+    def lowestCommonAncestor(self,root,p,q):
+        """
+        最近公共祖先
+        """
+        if root==None or root==p or root==q:
+            return root
+        left = self.lowestCommonAncestor(root.left,p,q)
+        right = self.lowestCommonAncestor(root.right,p,q)
+        if left == None:
+            return right
+        if right == None:
+            return left
+        return root
+
+    def lowestCommonAncestor2(self,root,p,q):
+        """最近公共祖先: 针对二叉搜索树"""
+        if root.val > p.val and root.val > q.val:
+            return self.lowestCommonAncestor(root.left,p,q)
+        if p.val > root.val and q.val > root.val:
+            return self.lowestCommonAncestor(root.right,p,q)
+        return root
+
+    def lowestCommonAncestor22(self,root,p,q):
+        """最近公共祖先: 针对二叉搜索树"""
+        while root:
+            if root.val > p.val and root.val > q.val:
+                root = root.left
+            elif p.val > root.val and q.val > root.val:
+                root = root.right
+            else:
+                return root
+    
+    def lowestCommonAncestor222(self,root,p,q):
+        stack = [root]
+        parent = {root: None}
+        while p not in parent or q not in parent:
+            node = stack.pop()
+            if node.left:
+                parent[node.left] = node
+                stack.append(node.left)
+            if node.right:
+                parent[node.right] = node
+                stack.append(node.right)
+        ancestors = set()
+        while p:
+            ancestors.add(p)
+            p = parent[p]
+        while q not in ancestors:
+            q = parent[q]
+        return q
+
+    def maxDepth(self,root:BinaryTreeNode):
+        if not root: return 0
+        return 1 + max(self.maxDepth(root.left),self.maxDepth(root.right))
+
+    def minDepth(self,root:BinaryTreeNode):
+        if not root :return 0
+        if not root.left:
+            return self.minDepth(root.right)+1
+        if not root.right:
+            return self.minDepth(root.left)+1
+        
+        leftMinDepth = self.minDepth(root.left)
+        rightMinDepth =self.minDepth(root.right)
+
+        return 1 + min(leftMinDepth,rightMinDepth)
 
 
 if __name__ == "__main__":
