@@ -127,7 +127,7 @@
         for next_node in visited:
             dfs(next_node,visited)
    ```
-   2. BFS 代码-递归
+   2. BFS 代码-非递归
    ```python
    def BFS(graph,start,end):
        queue = []
