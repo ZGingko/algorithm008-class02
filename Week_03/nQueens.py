@@ -37,10 +37,37 @@ class Solution:
                     DFS(queens+[q], xy_dif + [p-q], xy_sum+[p+q])
         result = []
         DFS([], [], [])
+        print(result)
         return [["."*i + "Q"+"."*(n-i-1) for i in sol] for sol in result]
+
+    
+    def totalNQueens(self, n):
+        if n<1:
+            return []
+        self.count = 0
+        self.result = []
+        self.DFS(n,0,0,0,0,[])
+        print(self.result)
+        return self.count
+    
+    def DFS(self,n,row,cols,pie,na,queens):
+        # recursion terminator
+        if row >= n:
+            self.count += 1
+            self.result.append(queens)
+            return
+
+        bits = (~(cols | pie | na)) & ((1 << n) - 1) # 得到当前所有的空位
+        
+        while bits:
+            p = bits & -bits  # 取得最低位的1
+            self.DFS(n,row+1, cols | p,(pie|p) << 1, (na|p) >> 1,queens+[p])
+            bits = bits & (bits - 1) # 去掉最低位的1
+        
 
 
 if __name__ == "__main__":
     sol = Solution()
     print(sol.solveNQueens(4))
+    print(sol.totalNQueens(4))
     
