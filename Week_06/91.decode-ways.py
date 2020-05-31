@@ -44,5 +44,5 @@ class Solution:
 
 if __name__ == "__main__":
     sol = Solution()
-    s = ""
+    s = "2264"
     print(sol.numDecodings(s))
